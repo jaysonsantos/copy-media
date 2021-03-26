@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "copy-media"
+version = "0.1.0"
+description = ""
+authors = ["Jayson Reis <santosdosreis@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+guessit = "^3.3.1"
+loguru = "^0.5.3"
+click = "^7.1.2"
+
+
+[tool.poetry.dev-dependencies]
+black = {version = "^20.8b1", allow-prereleases = true}
+mypy = "^0.812"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+copy-media = "copy_media.cli:main"
