@@ -1,7 +1,7 @@
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterator, Tuple
+from typing import Dict, Iterator, List, Tuple
 
 from guessit import guessit
 from loguru import logger
@@ -15,9 +15,10 @@ class Processor:
     mapping: Dict[str, str]
     last_run: int
 
-    def process(self):
+    def process(self) -> int:
         entries = list(self.fetch_entries())
         self.copy(zip(entries, self.parse_entries(entries)))
+        return len(entries)
 
     def fetch_entries(self):
         for name in self.base_directory.glob("*"):
@@ -29,8 +30,22 @@ class Processor:
                 yield name
 
     @staticmethod
-    def parse_entries(entries):
-        return [guessit(entry) for entry in entries]
+    def parse_entries(entries: List[Path]):
+        """
+        >>> from pathlib import Path
+        >>> entry, = Processor.parse_entries([Path("doctor who 2005 s03e01 YTS.mkv")])
+        >>> entry['title']
+        'doctor who'
+        >>> entry['year']
+        2005
+        >>> entry['season']
+        3
+        >>> entry['episode']
+        1
+        >>> entry['type']
+        'episode'
+        """
+        return [guessit(entry.name) for entry in entries]
 
     def copy(self, entries: Iterator[Tuple[Path, Dict[str, str]]]):
         for entry in entries:
