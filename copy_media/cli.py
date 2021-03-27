@@ -12,10 +12,10 @@ def validate_mapping(_, __, values):
     """
     >>> validate_mapping(None, None, [('episode', 'TV Show'), ('movie', 'Movie')])
     [('episode', 'TV Show'), ('movie', 'Movie')]
-    >>> validate_mapping(None, None, [('wrong', 'TV Show'), ('movie', 'Movie')])
+    >>> validate_mapping(None, None, [('wrong', 'TV Show'), ('movie', 'Movie')])  # doctest: +ELLIPSIS
     Traceback (most recent call last):
     ...
-    ValueError: mappings must be any of {'movie', 'episode'} and not 'wrong'
+    ValueError: mappings must be any of ... and not 'wrong'
     """
     valid_mappings = {"episode", "movie"}
     for (key, value) in values:
