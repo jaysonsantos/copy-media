@@ -5,13 +5,13 @@ description = ""
 authors = ["Jayson Reis <santosdosreis@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 guessit = "^3.3.1"
 loguru = "^0.5.3"
 click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
-black = {version = "^20.8b1", allow-prereleases = true}
+black = { version = "^20.8b1", allow-prereleases = true }
 mypy = "^0.812"
 pytest = "^6.2.2"
 
