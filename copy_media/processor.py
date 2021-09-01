@@ -58,9 +58,27 @@ class Processor:
             folder_name += f" ({data['year']})"
         folder = self.destination_directory / self.mapping[data["type"]] / folder_name
         folder.mkdir(parents=True, exist_ok=True)
-        final_destination = folder / source.name
-        logger.info(f"copying {source} to {final_destination}")
         if source.is_dir():
-            shutil.copytree(source, final_destination, dirs_exist_ok=True)
+            final_destination = folder
         else:
-            shutil.copy(source, final_destination)
+            final_destination = folder / source.name
+        self._copy(source, final_destination)
+
+    def _copy(self, source: Path, destination: Path):
+        if source.is_dir():
+            for child in source.iterdir():
+                self._copy(child, destination / child.name)
+
+            return
+
+        logger.info(f"copying {source} to {destination}")
+        if not self._should_copy(source, destination):
+            logger.debug(f"skippig copying {source}")
+            return
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(source, destination)
+
+    def _should_copy(self, source: Path, destination: Path):
+        return not (
+            destination.exists() and source.stat().st_size == destination.stat().st_size
+        )
